@@ -1,0 +1,580 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap');
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  body, .menu-root { background: #0d0d0d; color: #f0e6c8; font-family: 'Inter', sans-serif; }
+  .menu-root { max-width: 100%; }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    background: linear-gradient(135deg, #0d0d0d 0%, #1a1208 50%, #0d0d0d 100%);
+    padding: 40px 20px 36px;
+    text-align: center;
+    border-bottom: 1px solid #c8a84b33;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, #c8a84b18 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .hero-badge {
+    display: inline-block;
+    border: 1px solid #c8a84b55;
+    color: #c8a84b;
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 6px 18px;
+    border-radius: 2px;
+    margin-bottom: 10px;
+    font-weight: 500;
+  }
+  .hero-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(64px, 18vw, 110px);
+    font-weight: 700;
+    color: #f5e6b8;
+    line-height: 1;
+    margin-bottom: 0;
+    letter-spacing: -2px;
+  }
+  .hero-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin: 14px auto 14px;
+    max-width: 260px;
+  }
+  .hero-divider::before, .hero-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, transparent, #c8a84b88);
+  }
+  .hero-divider::after { background: linear-gradient(to left, transparent, #c8a84b88); }
+  .hero-skull { font-size: 18px; color: #c8a84b; }
+  .hero-meta { font-size: 12px; color: #9a8a6a; letter-spacing: 0.5px; }
+
+  /* NAV — scrollable pill row */
+  .cat-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: #0f0d08f5;
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid #c8a84b22;
+    padding: 10px 12px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    white-space: nowrap;
+  }
+  .cat-nav::-webkit-scrollbar { display: none; }
+  .cat-nav-inner { display: inline-flex; gap: 8px; min-width: max-content; }
+  .cat-btn {
+    background: #1a160c;
+    border: 1px solid #2a2418;
+    color: #9a8a6a;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 9px 16px;
+    cursor: pointer;
+    border-radius: 40px;
+    transition: all 0.2s;
+    white-space: nowrap;
+    min-height: 38px;
+  }
+  .cat-btn:hover { color: #c8a84b; border-color: #c8a84b44; }
+  .cat-btn.active { color: #0d0d0d; background: #c8a84b; border-color: #c8a84b; font-weight: 600; }
+
+  /* BODY */
+  .menu-body { padding: 24px 14px 48px; }
+  .menu-section { display: none; }
+  .menu-section.visible { display: block; }
+
+  /* Section header */
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .section-icon {
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    border: 1px solid #c8a84b44;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; flex-shrink: 0;
+    background: #c8a84b11;
+  }
+  .section-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 26px;
+    color: #f5e6b8;
+    font-weight: 700;
+  }
+  .section-line { flex: 1; height: 1px; background: linear-gradient(to right, #c8a84b44, transparent); }
+
+  /* Sub-category label */
+  .sub-cat {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #c8a84b;
+    margin: 20px 0 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .sub-cat::after { content: ''; flex: 1; height: 1px; background: #c8a84b33; }
+
+  /* Item rows — full-width tap-friendly */
+  .item-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 14px;
+    border-bottom: 1px solid #1e1a12;
+    gap: 10px;
+    min-height: 56px;
+  }
+  .item-row:last-child { border-bottom: none; }
+  .item-row:active { background: #1c1912; }
+
+  .item-left { flex: 1; min-width: 0; }
+  .item-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: #f0e6c8;
+    text-transform: capitalize;
+    line-height: 1.3;
+  }
+  .item-desc {
+    font-size: 11px;
+    color: #6a5e48;
+    margin-top: 2px;
+    line-height: 1.3;
+  }
+  .item-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+  .item-price {
+    font-size: 16px;
+    font-weight: 600;
+    color: #c8a84b;
+    font-family: 'Playfair Display', Georgia, serif;
+    white-space: nowrap;
+  }
+  .item-badge {
+    font-size: 9px;
+    padding: 2px 6px;
+    border-radius: 2px;
+    letter-spacing: 0.3px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .badge-veg { background: #1a3a1a; color: #5ec45e; border: 1px solid #5ec45e44; }
+  .badge-nonveg { background: #3a1a1a; color: #e06060; border: 1px solid #e0606044; }
+
+  .items-block {
+    background: #161410;
+    border: 1px solid #2a2418;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 4px;
+  }
+
+  /* Pizza table — mobile optimised */
+  .pizza-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-bottom: 4px; }
+  .pizza-table { width: 100%; border-collapse: collapse; font-size: 12px; min-width: 320px; }
+  .pizza-table th {
+    text-align: left;
+    padding: 10px 10px;
+    color: #9a8a6a;
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border-bottom: 1px solid #2a2418;
+    background: #111008;
+    white-space: nowrap;
+  }
+  .pizza-table td { padding: 11px 10px; border-bottom: 1px solid #1e1a12; color: #d8caa8; }
+  .pizza-table tr:active td { background: #1c1912; }
+  .pizza-table .name-col { color: #f0e6c8; font-weight: 500; font-size: 13px; }
+  .pizza-table .price-col { color: #c8a84b; font-weight: 600; text-align: right; white-space: nowrap; }
+  .pizza-block { background: #161410; border: 1px solid #2a2418; border-radius: 8px; overflow: hidden; margin-bottom: 4px; }
+
+  /* Combo cards — stack vertically on mobile */
+  .combo-card {
+    background: #1a160c;
+    border: 1px solid #c8a84b33;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 10px;
+  }
+  .combo-for { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #c8a84b; margin-bottom: 8px; }
+  .combo-item-name { font-size: 14px; color: #f0e6c8; line-height: 1.4; padding-left: 12px; border-left: 2px solid #c8a84b44; }
+  .combo-price { font-family: 'Playfair Display', Georgia, serif; font-size: 20px; color: #c8a84b; font-weight: 700; margin-top: 10px; }
+
+  /* Continue nudge after rolls */
+  .continue-nudge {
+    margin-top: 28px;
+    border-top: 1px solid #c8a84b22;
+    padding-top: 24px;
+    text-align: center;
+  }
+  .nudge-label { color: #9a8a6a; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 14px; }
+  .nudge-btns { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+  .nudge-btn {
+    background: #1a160c;
+    border: 1px solid #c8a84b44;
+    color: #c8a84b;
+    padding: 11px 18px;
+    font-size: 13px;
+    cursor: pointer;
+    border-radius: 40px;
+    font-family: 'Inter', sans-serif;
+    min-height: 44px;
+  }
+  .nudge-btn:active { background: #c8a84b22; }
+
+  /* Footer */
+  .menu-footer {
+    text-align: center;
+    padding: 32px 20px;
+    border-top: 1px solid #c8a84b22;
+    color: #6a5e48;
+    font-size: 12px;
+    background: #0d0d0d;
+  }
+  .menu-footer strong { color: #c8a84b; display: block; font-family: 'Playfair Display', Georgia, serif; font-size: 18px; margin-bottom: 6px; }
+</style>
+
+<div class="menu-root">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-badge">The Bandits Bistro</div>
+    <h1 class="hero-title">B2</h1>
+    <div class="hero-divider"><span class="hero-skull">☠</span></div>
+    <p class="hero-meta">All prices inclusive of taxes · Dine in & Takeaway</p>
+  </div>
+
+  <!-- NAV -->
+  <nav class="cat-nav">
+    <div class="cat-nav-inner">
+      <button class="cat-btn active" onclick="show('combos',this)">🎯 Combos</button>
+      <button class="cat-btn" onclick="show('burgers',this)">🍔 Burgers</button>
+      <button class="cat-btn" onclick="show('fries',this)">🍟 Fries</button>
+      <button class="cat-btn" onclick="show('pizza',this)">🍕 Pizza</button>
+      <button class="cat-btn" onclick="show('sandwich',this)">🥪 Sandwich</button>
+      <button class="cat-btn" onclick="show('pasta',this)">🍝 Pasta</button>
+      <button class="cat-btn" onclick="show('rolls',this)">🌯 Rolls</button>
+      <button class="cat-btn" onclick="show('maggie',this)">🍜 Maggie</button>
+      <button class="cat-btn" onclick="show('waffles',this)">🧇 Waffles</button>
+      <button class="cat-btn" onclick="show('desserts',this)">🍮 Desserts</button>
+      <button class="cat-btn" onclick="show('drinks',this)">🥤 Drinks</button>
+    </div>
+  </nav>
+
+  <div class="menu-body">
+
+    <!-- COMBOS -->
+    <div class="menu-section visible" id="sec-combos">
+      <div class="section-header"><div class="section-icon">🎯</div><h2 class="section-title">Combo Deals</h2><div class="section-line"></div></div>
+
+      <div class="sub-cat">Veg Combos</div>
+      <div class="combo-card"><div class="combo-for">For 1 person</div><div class="combo-item-name">1 Veg Patty Burger + French Fries + 250ml Soft Drink</div><div class="combo-price">₹109</div></div>
+      <div class="combo-card"><div class="combo-for">For 1 person</div><div class="combo-item-name">1 Veg Cheese Burger + French Fries + 250ml Soft Drink</div><div class="combo-price">₹129</div></div>
+      <div class="combo-card"><div class="combo-for">For 1 person</div><div class="combo-item-name">1 Personal Pizza + 1 Pasta + 250ml Soft Drink / Juice</div><div class="combo-price">₹199</div></div>
+      <div class="combo-card"><div class="combo-for">For 2 people</div><div class="combo-item-name">2 Regular Pizza + 1 Pasta + 500ml Soft Drink</div><div class="combo-price">₹460</div></div>
+      <div class="combo-card"><div class="combo-for">For 2 people</div><div class="combo-item-name">2 Veg Cheese Burger + 1 Pasta + 500ml Soft Drink</div><div class="combo-price">₹269</div></div>
+      <div class="combo-card"><div class="combo-for">For 3 people</div><div class="combo-item-name">1 Hot Chilli Paneer Medium Pizza + 1 Garlic Bread + 750ml Soft Drink</div><div class="combo-price">₹349</div></div>
+      <div class="combo-card"><div class="combo-for">For 3 people</div><div class="combo-item-name">1 Hot Chilli Paneer Medium + 1 Farm House Pizza + 750ml Soft Drink</div><div class="combo-price">₹569</div></div>
+      <div class="combo-card"><div class="combo-for">For 3 people</div><div class="combo-item-name">1 Peppy Paneer Large + 1 Garlic Bread + 750ml Soft Drink</div><div class="combo-price">₹529</div></div>
+
+      <div class="sub-cat" style="margin-top:24px">Non-Veg Combos</div>
+      <div class="combo-card"><div class="combo-for">For 1 person</div><div class="combo-item-name">1 Chicken Burger + French Fries + 250ml Soft Drink</div><div class="combo-price">₹149</div></div>
+      <div class="combo-card"><div class="combo-for">For 1 person</div><div class="combo-item-name">1 Chicken Cheese Burger + French Fries + 250ml Soft Drink</div><div class="combo-price">₹169</div></div>
+      <div class="combo-card"><div class="combo-for">For 1 person</div><div class="combo-item-name">1 Personal Pizza + 1 Pasta + 250ml Soft Drink</div><div class="combo-price">₹229</div></div>
+      <div class="combo-card"><div class="combo-for">For 2 people</div><div class="combo-item-name">2 Regular Pizza + 1 Pasta + 500ml Soft Drink</div><div class="combo-price">₹469</div></div>
+      <div class="combo-card"><div class="combo-for">For 2 people</div><div class="combo-item-name">2 Chicken Cheese Burger + 1 Pasta + 500ml Soft Drink</div><div class="combo-price">₹329</div></div>
+      <div class="combo-card"><div class="combo-for">For 3 people</div><div class="combo-item-name">1 Chicken Medium Pizza + 2 Garlic Bread/Fries + 750ml Soft Drink</div><div class="combo-price">₹379</div></div>
+      <div class="combo-card"><div class="combo-for">For 3 people</div><div class="combo-item-name">1 Chicken Medium + 1 Chicken Cheese Medium Pizza + 750ml Soft Drink</div><div class="combo-price">₹599</div></div>
+      <div class="combo-card"><div class="combo-for">For 3 people</div><div class="combo-item-name">1 Chicken Large + 2 Garlic Bread/Fries + 750ml Soft Drink</div><div class="combo-price">₹549</div></div>
+
+      <div class="sub-cat" style="margin-top:24px">Spicy Veg Pizza Combos</div>
+      <div class="combo-card"><div class="combo-for">Ultimate Veg</div><div class="combo-item-name">1 Large + 1 Medium + 1 Garlic Bread + 750ml Soft Drink</div><div class="combo-price">Ask us</div></div>
+      <div class="combo-card"><div class="combo-for">Veg Feast</div><div class="combo-item-name">2 Medium + 1 Garlic Bread + 750ml Drink + 1 Choco Lava</div><div class="combo-price">Ask us</div></div>
+      <div class="combo-card"><div class="combo-for">Veg Mega</div><div class="combo-item-name">2 Large + 1 Garlic Bread + 750ml + 1 Choco Lava</div><div class="combo-price">Ask us</div></div>
+
+      <div class="sub-cat" style="margin-top:24px">Spicy Non-Veg Pizza Combos</div>
+      <div class="combo-card"><div class="combo-for">Non-Veg Ultimate</div><div class="combo-item-name">1 Large + 1 Medium + 2 Garlic Bread/Fries + 750ml Soft Drink</div><div class="combo-price">₹799</div></div>
+      <div class="combo-card"><div class="combo-for">Non-Veg Feast</div><div class="combo-item-name">2 Medium + 2 Garlic Bread/Fries + 750ml Drink + 1 Choco Lava</div><div class="combo-price">₹699</div></div>
+      <div class="combo-card"><div class="combo-for">Non-Veg Mega</div><div class="combo-item-name">2 Large + 2 Garlic Bread/Fries + 750ml + 1 Choco Lava</div><div class="combo-price">₹949</div></div>
+    </div>
+
+    <!-- BURGERS -->
+    <div class="menu-section" id="sec-burgers">
+      <div class="section-header"><div class="section-icon">🍔</div><h2 class="section-title">Burgers</h2><div class="section-line"></div></div>
+      <div class="sub-cat">Veg</div>
+      <div class="items-block">
+        <div class="item-row"><div class="item-left"><div class="item-name">Aloo Tikki</div><div class="item-desc">Classic potato tikki patty</div></div><div class="item-right"><span class="item-price">₹49</span><span class="item-badge badge-veg">● VEG</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Veg Burger</div><div class="item-desc">Garden fresh veggie patty</div></div><div class="item-right"><span class="item-price">₹69</span><span class="item-badge badge-veg">● VEG</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">BBQ Veg Burger</div><div class="item-desc">Smoky BBQ sauce with veg patty</div></div><div class="item-right"><span class="item-price">₹79</span><span class="item-badge badge-veg">● VEG</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Veg Tandoori Burger</div><div class="item-desc">Tandoori spiced with mint chutney</div></div><div class="item-right"><span class="item-price">₹79</span><span class="item-badge badge-veg">● VEG</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Veg Cheese Burger</div></div><div class="item-right"><span class="item-price">₹89</span><span class="item-badge badge-veg">● VEG</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Veg Jumbo Burger</div></div><div class="item-right"><span class="item-price">₹89</span><span class="item-badge badge-veg">● VEG</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Paneer Burger</div></div><div class="item-right"><span class="item-price">₹99</span><span class="item-badge badge-veg">● VEG</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Paneer Cheese Burger</div></div><div class="item-right"><span class="item-price">₹110</span><span class="item-badge badge-veg">● VEG</span></div></div>
+      </div>
+      <div class="sub-cat">Non-Veg</div>
+      <div class="items-block">
+        <div class="item-row"><div class="item-left"><div class="item-name">Chicken Burger</div></div><div class="item-right"><span class="item-price">₹99</span><span class="item-badge badge-nonveg">● NON VEG</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Chicken Tandoori</div></div><div class="item-right"><span class="item-price">₹109</span><span class="item-badge badge-nonveg">● NON VEG</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">BBQ Chicken Burger</div></div><div class="item-right"><span class="item-price">₹109</span><span class="item-badge badge-nonveg">● NON VEG</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Chicken Cheese Burger</div></div><div class="item-right"><span class="item-price">₹119</span><span class="item-badge badge-nonveg">● NON VEG</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Chicken Jumbo</div></div><div class="item-right"><span class="item-price">₹149</span><span class="item-badge badge-nonveg">● NON VEG</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Rocket Chicken</div><div class="item-desc">Fiery hot with rocket leaves</div></div><div class="item-right"><span class="item-price">₹149</span><span class="item-badge badge-nonveg">● NON VEG</span></div></div>
+      </div>
+    </div>
+
+    <!-- FRIES -->
+    <div class="menu-section" id="sec-fries">
+      <div class="section-header"><div class="section-icon">🍟</div><h2 class="section-title">Fries & Sides</h2><div class="section-line"></div></div>
+      <div class="items-block">
+        <div class="item-row"><div class="item-left"><div class="item-name">French Fries</div></div><div class="item-right"><span class="item-price">₹49</span><span class="item-badge badge-veg">● VEG</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Masala Fries</div></div><div class="item-right"><span class="item-price">₹59</span><span class="item-badge badge-veg">● VEG</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Peri Peri Fries</div></div><div class="item-right"><span class="item-price">₹59</span><span class="item-badge badge-veg">● VEG</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Cheese Loaded Fries</div></div><div class="item-right"><span class="item-price">₹79</span><span class="item-badge badge-veg">● VEG</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Nachos Cheese Fries</div></div><div class="item-right"><span class="item-price">₹89</span><span class="item-badge badge-veg">● VEG</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Chicken Loaded Fries</div></div><div class="item-right"><span class="item-price">₹99</span><span class="item-badge badge-nonveg">● NON VEG</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Nachos Chicken Cheese</div></div><div class="item-right"><span class="item-price">₹109</span><span class="item-badge badge-nonveg">● NON VEG</span></div></div>
+      </div>
+    </div>
+
+    <!-- PIZZA -->
+    <div class="menu-section" id="sec-pizza">
+      <div class="section-header"><div class="section-icon">🍕</div><h2 class="section-title">Pizzas</h2><div class="section-line"></div></div>
+
+      <div class="sub-cat">Mania Pizzas (Personal)</div>
+      <div class="items-block">
+        <div class="item-row"><div class="item-left"><div class="item-name">Tomato</div></div><div class="item-right"><span class="item-price">₹69</span><span class="item-badge badge-veg">● VEG</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Onion</div></div><div class="item-right"><span class="item-price">₹69</span><span class="item-badge badge-veg">● VEG</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Capsicum</div></div><div class="item-right"><span class="item-price">₹79</span><span class="item-badge badge-veg">● VEG</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Corn</div></div><div class="item-right"><span class="item-price">₹89</span><span class="item-badge badge-veg">● VEG</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Paneer Onion / Capsicum</div></div><div class="item-right"><span class="item-price">₹99</span><span class="item-badge badge-veg">● VEG</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">B2's Jalapeño Paneer Special</div></div><div class="item-right"><span class="item-price">₹109</span><span class="item-badge badge-veg">● VEG</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Chicken Mania</div></div><div class="item-right"><span class="item-price">₹99</span><span class="item-badge badge-nonveg">● NON VEG</span></div></div>
+      </div>
+
+      <div class="sub-cat" style="margin-top:20px">Veg Pizzas <span style="font-size:9px;color:#6a5e48;letter-spacing:1px"> · S · R · M · L</span></div>
+      <div class="pizza-block"><div class="pizza-wrap">
+        <table class="pizza-table">
+          <thead><tr><th>Name</th><th style="text-align:right">S</th><th style="text-align:right">R</th><th style="text-align:right">M</th><th style="text-align:right">L</th></tr></thead>
+          <tbody>
+            <tr><td class="name-col">Margherita</td><td class="price-col">79</td><td class="price-col">129</td><td class="price-col">189</td><td class="price-col">299</td></tr>
+            <tr><td class="name-col">Corn Riot</td><td class="price-col">99</td><td class="price-col">159</td><td class="price-col">239</td><td class="price-col">379</td></tr>
+            <tr><td class="name-col">Fresh Veggies</td><td class="price-col">109</td><td class="price-col">179</td><td class="price-col">269</td><td class="price-col">429</td></tr>
+            <tr><td class="name-col">Baby Corn</td><td class="price-col">119</td><td class="price-col">189</td><td class="price-col">279</td><td class="price-col">449</td></tr>
+            <tr><td class="name-col">Mexican Bite</td><td class="price-col">119</td><td class="price-col">189</td><td class="price-col">279</td><td class="price-col">449</td></tr>
+            <tr><td class="name-col">Spicy Pasta</td><td class="price-col">129</td><td class="price-col">199</td><td class="price-col">299</td><td class="price-col">479</td></tr>
+            <tr><td class="name-col">Spicy Mushroom</td><td class="price-col">129</td><td class="price-col">199</td><td class="price-col">299</td><td class="price-col">479</td></tr>
+            <tr><td class="name-col">Hot Chilli Paneer</td><td class="price-col">129</td><td class="price-col">199</td><td class="price-col">299</td><td class="price-col">479</td></tr>
+            <tr><td class="name-col">Spicy 5 Pepper</td><td class="price-col">139</td><td class="price-col">209</td><td class="price-col">309</td><td class="price-col">489</td></tr>
+            <tr><td class="name-col">B2's Cheese Fusion</td><td class="price-col">149</td><td class="price-col">219</td><td class="price-col">329</td><td class="price-col">529</td></tr>
+            <tr><td class="name-col">B2 Special Divided</td><td class="price-col">169</td><td class="price-col">249</td><td class="price-col">369</td><td class="price-col">589</td></tr>
+          </tbody>
+        </table>
+      </div></div>
+
+      <div class="sub-cat" style="margin-top:20px">Non-Veg Pizzas <span style="font-size:9px;color:#6a5e48;letter-spacing:1px"> · S · R · M · L</span></div>
+      <div class="pizza-block"><div class="pizza-wrap">
+        <table class="pizza-table">
+          <thead><tr><th>Name</th><th style="text-align:right">S</th><th style="text-align:right">R</th><th style="text-align:right">M</th><th style="text-align:right">L</th></tr></thead>
+          <tbody>
+            <tr><td class="name-col">Chicken Tandoori / BBQ</td><td class="price-col">109</td><td class="price-col">169</td><td class="price-col">249</td><td class="price-col">399</td></tr>
+            <tr><td class="name-col">Chicken Tikka</td><td class="price-col">119</td><td class="price-col">189</td><td class="price-col">279</td><td class="price-col">449</td></tr>
+            <tr><td class="name-col">Chicken Cheese</td><td class="price-col">139</td><td class="price-col">209</td><td class="price-col">319</td><td class="price-col">509</td></tr>
+            <tr><td class="name-col">Chicken Lover</td><td class="price-col">149</td><td class="price-col">219</td><td class="price-col">329</td><td class="price-col">529</td></tr>
+            <tr><td class="name-col">Korma Chicken Loaded</td><td class="price-col">159</td><td class="price-col">229</td><td class="price-col">339</td><td class="price-col">539</td></tr>
+            <tr><td class="name-col">B2 Spicy Chicken</td><td class="price-col">149</td><td class="price-col">219</td><td class="price-col">329</td><td class="price-col">529</td></tr>
+            <tr><td class="name-col">B2 Special Chicken Divided</td><td class="price-col">179</td><td class="price-col">259</td><td class="price-col">389</td><td class="price-col">619</td></tr>
+          </tbody>
+        </table>
+      </div></div>
+
+      <div class="sub-cat" style="margin-top:20px">Garlic Bread</div>
+      <div class="items-block">
+        <div class="item-row"><div class="item-left"><div class="item-name">Cheese Garlic Bread</div></div><div class="item-right"><span class="item-price">₹49</span><span class="item-badge badge-veg">● VEG</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Stuffed Garlic Bread</div></div><div class="item-right"><span class="item-price">₹59</span><span class="item-badge badge-veg">● VEG</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Mushroom Stuffed</div></div><div class="item-right"><span class="item-price">₹69</span><span class="item-badge badge-veg">● VEG</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Paneer Stuffed</div></div><div class="item-right"><span class="item-price">₹79</span><span class="item-badge badge-veg">● VEG</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Chicken Tikka Stuffed</div></div><div class="item-right"><span class="item-price">₹99</span><span class="item-badge badge-nonveg">● NON VEG</span></div></div>
+      </div>
+    </div>
+
+    <!-- SANDWICH -->
+    <div class="menu-section" id="sec-sandwich">
+      <div class="section-header"><div class="section-icon">🥪</div><h2 class="section-title">Sandwiches</h2><div class="section-line"></div></div>
+      <div class="sub-cat">Veg</div>
+      <div class="items-block">
+        <div class="item-row"><div class="item-left"><div class="item-name">Veg Sandwich</div></div><div class="item-right"><span class="item-price">₹59</span><span class="item-badge badge-veg">● VEG</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Veg Cheese Sandwich</div></div><div class="item-right"><span class="item-price">₹69</span><span class="item-badge badge-veg">● VEG</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Veg Tandoori / BBQ</div></div><div class="item-right"><span class="item-price">₹69</span><span class="item-badge badge-veg">● VEG</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Mushroom Cheese</div></div><div class="item-right"><span class="item-price">₹89</span><span class="item-badge badge-veg">● VEG</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Paneer Sandwich</div></div><div class="item-right"><span class="item-price">₹89</span><span class="item-badge badge-veg">● VEG</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Paneer Cheese Sandwich</div></div><div class="item-right"><span class="item-price">₹99</span><span class="item-badge badge-veg">● VEG</span></div></div>
+      </div>
+      <div class="sub-cat">Non-Veg</div>
+      <div class="items-block">
+        <div class="item-row"><div class="item-left"><div class="item-name">Egg Sandwich</div></div><div class="item-right"><span class="item-price">₹79</span><span class="item-badge badge-nonveg">● NON VEG</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Egg Cheese Sandwich</div></div><div class="item-right"><span class="item-price">₹89</span><span class="item-badge badge-nonveg">● NON VEG</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Chicken Sandwich</div></div><div class="item-right"><span class="item-price">₹89</span><span class="item-badge badge-nonveg">● NON VEG</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Chicken Cheese Sandwich</div></div><div class="item-right"><span class="item-price">₹99</span><span class="item-badge badge-nonveg">● NON VEG</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Chicken Tandoori / BBQ</div></div><div class="item-right"><span class="item-price">₹99</span><span class="item-badge badge-nonveg">● NON VEG</span></div></div>
+      </div>
+    </div>
+
+    <!-- PASTA -->
+    <div class="menu-section" id="sec-pasta">
+      <div class="section-header"><div class="section-icon">🍝</div><h2 class="section-title">Pasta</h2><div class="section-line"></div></div>
+      <div class="items-block">
+        <div class="item-row"><div class="item-left"><div class="item-name">Red Sauce Pasta</div><div class="item-desc">Classic tomato base</div></div><div class="item-right"><span class="item-price">₹89</span><span class="item-badge badge-veg">● VEG</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">White Cheese Pasta</div><div class="item-desc">Creamy béchamel</div></div><div class="item-right"><span class="item-price">₹119</span><span class="item-badge badge-veg">● VEG</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Alfredo White Cheese Pasta</div></div><div class="item-right"><span class="item-price">₹129</span><span class="item-badge badge-veg">● VEG</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Red Sauce Chicken Pasta</div></div><div class="item-right"><span class="item-price">₹129</span><span class="item-badge badge-nonveg">● NON VEG</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">White Cheese Chicken Pasta</div></div><div class="item-right"><span class="item-price">₹149</span><span class="item-badge badge-nonveg">● NON VEG</span></div></div>
+      </div>
+    </div>
+
+    <!-- ROLLS -->
+    <div class="menu-section" id="sec-rolls">
+      <div class="section-header"><div class="section-icon">🌯</div><h2 class="section-title">B2 Fold Rolls</h2><div class="section-line"></div></div>
+      <div class="items-block">
+        <div class="item-row"><div class="item-left"><div class="item-name">Veg Cheese Roll</div></div><div class="item-right"><span class="item-price">₹45</span><span class="item-badge badge-veg">● VEG</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Spicy Cheese Roll</div></div><div class="item-right"><span class="item-price">₹59</span><span class="item-badge badge-veg">● VEG</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Paneer Roll</div></div><div class="item-right"><span class="item-price">₹69</span><span class="item-badge badge-veg">● VEG</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Mushroom Roll</div></div><div class="item-right"><span class="item-price">₹59</span><span class="item-badge badge-veg">● VEG</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Chicken Roll</div></div><div class="item-right"><span class="item-price">₹79</span><span class="item-badge badge-nonveg">● NON VEG</span></div></div>
+      </div>
+      <div class="continue-nudge">
+        <div class="nudge-label">More to explore</div>
+        <div class="nudge-btns">
+          <button class="nudge-btn" onclick="show('maggie', document.querySelectorAll('.cat-btn')[7])">🍜 Maggie</button>
+          <button class="nudge-btn" onclick="show('waffles', document.querySelectorAll('.cat-btn')[8])">🧇 Waffles</button>
+          <button class="nudge-btn" onclick="show('desserts', document.querySelectorAll('.cat-btn')[9])">🍮 Desserts</button>
+          <button class="nudge-btn" onclick="show('drinks', document.querySelectorAll('.cat-btn')[10])">🥤 Drinks</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MAGGIE -->
+    <div class="menu-section" id="sec-maggie">
+      <div class="section-header"><div class="section-icon">🍜</div><h2 class="section-title">Maggie</h2><div class="section-line"></div></div>
+      <div class="items-block">
+        <div class="item-row"><div class="item-left"><div class="item-name">Plain Maggie</div></div><div class="item-right"><span class="item-price">₹40</span><span class="item-badge badge-veg">● VEG</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Veg Maggie</div></div><div class="item-right"><span class="item-price">₹45</span><span class="item-badge badge-veg">● VEG</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Cheese Maggie</div></div><div class="item-right"><span class="item-price">₹55</span><span class="item-badge badge-veg">● VEG</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Egg Maggie</div></div><div class="item-right"><span class="item-price">₹55</span><span class="item-badge badge-nonveg">● NON VEG</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Cheese Egg Maggie</div></div><div class="item-right"><span class="item-price">₹69</span><span class="item-badge badge-nonveg">● NON VEG</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Chicken Maggie</div></div><div class="item-right"><span class="item-price">₹89</span><span class="item-badge badge-nonveg">● NON VEG</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Chicken Cheese Maggie</div></div><div class="item-right"><span class="item-price">₹99</span><span class="item-badge badge-nonveg">● NON VEG</span></div></div>
+      </div>
+    </div>
+
+    <!-- WAFFLES -->
+    <div class="menu-section" id="sec-waffles">
+      <div class="section-header"><div class="section-icon">🧇</div><h2 class="section-title">Waffles</h2><div class="section-line"></div></div>
+      <div class="items-block">
+        <div class="item-row"><div class="item-left"><div class="item-name">Milk Chocolate</div></div><div class="item-right"><span class="item-price">₹69</span><span class="item-badge badge-veg">● VEG</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Dark Chocolate</div></div><div class="item-right"><span class="item-price">₹79</span><span class="item-badge badge-veg">● VEG</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Belgium Chocolate</div></div><div class="item-right"><span class="item-price">₹79</span><span class="item-badge badge-veg">● VEG</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Nutella</div></div><div class="item-right"><span class="item-price">₹89</span><span class="item-badge badge-veg">● VEG</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Hazelnut</div></div><div class="item-right"><span class="item-price">₹109</span><span class="item-badge badge-veg">● VEG</span></div></div>
+      </div>
+    </div>
+
+    <!-- DESSERTS -->
+    <div class="menu-section" id="sec-desserts">
+      <div class="section-header"><div class="section-icon">🍮</div><h2 class="section-title">Desserts</h2><div class="section-line"></div></div>
+      <div class="items-block">
+        <div class="item-row"><div class="item-left"><div class="item-name">Choco Lava Cake</div><div class="item-desc">Warm molten chocolate centre</div></div><div class="item-right"><span class="item-price">₹59</span><span class="item-badge badge-veg">● VEG</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Red Velvet Cake</div></div><div class="item-right"><span class="item-price">₹79</span><span class="item-badge badge-veg">● VEG</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Sizzling Brownie</div><div class="item-desc">Hot brownie with ice cream</div></div><div class="item-right"><span class="item-price">₹109</span><span class="item-badge badge-veg">● VEG</span></div></div>
+      </div>
+    </div>
+
+    <!-- DRINKS -->
+    <div class="menu-section" id="sec-drinks">
+      <div class="section-header"><div class="section-icon">🥤</div><h2 class="section-title">Drinks</h2><div class="section-line"></div></div>
+      <div class="sub-cat">Mojitos</div>
+      <div class="items-block">
+        <div class="item-row"><div class="item-left"><div class="item-name">Lemon Soda</div></div><div class="item-right"><span class="item-price">₹29</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Kiwi Mojito</div></div><div class="item-right"><span class="item-price">₹49</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Green Apple</div></div><div class="item-right"><span class="item-price">₹59</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Strawberry</div></div><div class="item-right"><span class="item-price">₹59</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Virgin Mojito</div></div><div class="item-right"><span class="item-price">₹59</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Orange</div></div><div class="item-right"><span class="item-price">₹59</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Blueberry</div></div><div class="item-right"><span class="item-price">₹59</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Pineapple</div></div><div class="item-right"><span class="item-price">₹59</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Bubblegum</div></div><div class="item-right"><span class="item-price">₹69</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Blue Curacao</div></div><div class="item-right"><span class="item-price">₹69</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Black Current</div></div><div class="item-right"><span class="item-price">₹69</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Butterscotch</div></div><div class="item-right"><span class="item-price">₹69</span></div></div>
+      </div>
+      <div class="sub-cat">Fresh Juices</div>
+      <div class="items-block">
+        <div class="item-row"><div class="item-left"><div class="item-name">Banana</div></div><div class="item-right"><span class="item-price">₹40</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Watermelon</div></div><div class="item-right"><span class="item-price">₹45</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Papaya</div></div><div class="item-right"><span class="item-price">₹45</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Mosambi</div></div><div class="item-right"><span class="item-price">₹45</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Musk Melon</div></div><div class="item-right"><span class="item-price">₹45</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Orange Juice</div></div><div class="item-right"><span class="item-price">₹55</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Mango Juice</div></div><div class="item-right"><span class="item-price">Seasonal</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Flavored Lassi</div></div><div class="item-right"><span class="item-price">Ask us</span></div></div>
+      </div>
+      <div class="sub-cat">Milkshakes</div>
+      <div class="items-block">
+        <div class="item-row"><div class="item-left"><div class="item-name">Cold Coffee</div></div><div class="item-right"><span class="item-price">₹49</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Banana Shake</div></div><div class="item-right"><span class="item-price">₹49</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Orange Shake</div></div><div class="item-right"><span class="item-price">₹59</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Kiwi Shake</div></div><div class="item-right"><span class="item-price">₹59</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Strawberry Shake</div></div><div class="item-right"><span class="item-price">₹59</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Chocolate Shake</div></div><div class="item-right"><span class="item-price">₹69</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Blueberry Shake</div></div><div class="item-right"><span class="item-price">₹69</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Vanilla Shake</div></div><div class="item-right"><span class="item-price">₹69</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Butterscotch Shake</div></div><div class="item-right"><span class="item-price">₹69</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Mango Shake</div></div><div class="item-right"><span class="item-price">₹69</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Pineapple Shake</div></div><div class="item-right"><span class="item-price">₹69</span></div></div>
+        <div class="item-row"><div class="item-left"><div class="item-name">Green Apple Shake</div></div><div class="item-right"><span class="item-price">₹69</span></div></div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="menu-footer">
+    <strong>B2 — The Bandits Bistro</strong>
+    A Taste Adventure · Dine in & Takeaway<br>
+    <span style="margin-top:8px;display:inline-block;color:#c8a84b44;font-size:18px;letter-spacing:6px">☠ ☠ ☠</span>
+  </div>
+</div>
+
+<script>
+function show(id, btn) {
+  document.querySelectorAll('.menu-section').forEach(s => s.classList.remove('visible'));
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('sec-' + id).classList.add('visible');
+  if (btn) btn.classList.add('active');
+  window.scrollTo({ top: 80, behavior: 'smooth' });
+}
+</script>
