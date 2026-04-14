@@ -1,11 +1,37 @@
 
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap');
-  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-  body, .menu-root { background: #0d0d0d; color: #f0e6c8; font-family: 'Inter', sans-serif; }
-  .menu-root { max-width: 100%; }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>B2 Menu</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap');
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    html { font-size: 16px; }
+    body { background: #0d0d0d; color: #f0e6c8; font-family: 'Inter', sans-serif; line-height: 1.55; min-height: 100vh; }
+    body, .menu-root { background: #0d0d0d; color: #f0e6c8; }
+    .menu-root { max-width: 100%; }
 
-  /* HERO */
+    @media (max-width: 640px) {
+      .hero { padding: 28px 16px 30px; }
+      .hero-title { font-size: clamp(42px, 16vw, 72px); }
+      .hero-badge { font-size: 12px; padding: 6px 14px; }
+      .hero-meta { font-size: 13px; }
+      .section-title { font-size: 22px; }
+      .sub-cat { font-size: 11px; }
+      .item-row { padding: 16px 12px; min-height: 64px; }
+      .item-name { font-size: 16px; }
+      .item-desc { font-size: 13px; }
+      .item-price { font-size: 18px; }
+      .item-badge { font-size: 10px; padding: 3px 7px; }
+      .cat-btn { font-size: 14px; padding: 10px 14px; min-height: 44px; }
+      .nudge-btn { font-size: 14px; min-height: 46px; }
+      .menu-footer { font-size: 13px; }
+      .pizza-table th, .pizza-table td { font-size: 12px; }
+    }
+
+    /* HERO */
   .hero {
     position: relative;
     background: linear-gradient(135deg, #0d0d0d 0%, #1a1208 50%, #0d0d0d 100%);
@@ -272,10 +298,10 @@
   <!-- NAV -->
   <nav class="cat-nav">
     <div class="cat-nav-inner">
-      <button class="cat-btn active" onclick="show('combos',this)">🎯 Combos</button>
       <button class="cat-btn" onclick="show('burgers',this)">🍔 Burgers</button>
       <button class="cat-btn" onclick="show('fries',this)">🍟 Fries</button>
       <button class="cat-btn" onclick="show('pizza',this)">🍕 Pizza</button>
+      <button class="cat-btn active" onclick="show('combos',this)">🎯 Combos</button>
       <button class="cat-btn" onclick="show('sandwich',this)">🥪 Sandwich</button>
       <button class="cat-btn" onclick="show('pasta',this)">🍝 Pasta</button>
       <button class="cat-btn" onclick="show('rolls',this)">🌯 Rolls</button>
@@ -292,35 +318,35 @@
     <div class="menu-section visible" id="sec-combos">
       <div class="section-header"><div class="section-icon">🎯</div><h2 class="section-title">Combo Deals</h2><div class="section-line"></div></div>
 
-      <div class="sub-cat">Veg Combos</div>
+      <div class="sub-cat" style="margin-top:24px">Meal for 1</div>
       <div class="combo-card"><div class="combo-for">For 1 person</div><div class="combo-item-name">1 Veg Patty Burger + French Fries + 250ml Soft Drink</div><div class="combo-price">₹109</div></div>
       <div class="combo-card"><div class="combo-for">For 1 person</div><div class="combo-item-name">1 Veg Cheese Burger + French Fries + 250ml Soft Drink</div><div class="combo-price">₹129</div></div>
-      <div class="combo-card"><div class="combo-for">For 1 person</div><div class="combo-item-name">1 Personal Pizza + 1 Pasta + 250ml Soft Drink / Juice</div><div class="combo-price">₹199</div></div>
-      <div class="combo-card"><div class="combo-for">For 2 people</div><div class="combo-item-name">2 Regular Pizza + 1 Pasta + 500ml Soft Drink</div><div class="combo-price">₹460</div></div>
-      <div class="combo-card"><div class="combo-for">For 2 people</div><div class="combo-item-name">2 Veg Cheese Burger + 1 Pasta + 500ml Soft Drink</div><div class="combo-price">₹269</div></div>
-      <div class="combo-card"><div class="combo-for">For 3 people</div><div class="combo-item-name">1 Hot Chilli Paneer Medium Pizza + 1 Garlic Bread + 750ml Soft Drink</div><div class="combo-price">₹349</div></div>
-      <div class="combo-card"><div class="combo-for">For 3 people</div><div class="combo-item-name">1 Hot Chilli Paneer Medium + 1 Farm House Pizza + 750ml Soft Drink</div><div class="combo-price">₹569</div></div>
-      <div class="combo-card"><div class="combo-for">For 3 people</div><div class="combo-item-name">1 Peppy Paneer Large + 1 Garlic Bread + 750ml Soft Drink</div><div class="combo-price">₹529</div></div>
-
-      <div class="sub-cat" style="margin-top:24px">Non-Veg Combos</div>
       <div class="combo-card"><div class="combo-for">For 1 person</div><div class="combo-item-name">1 Chicken Burger + French Fries + 250ml Soft Drink</div><div class="combo-price">₹149</div></div>
       <div class="combo-card"><div class="combo-for">For 1 person</div><div class="combo-item-name">1 Chicken Cheese Burger + French Fries + 250ml Soft Drink</div><div class="combo-price">₹169</div></div>
-      <div class="combo-card"><div class="combo-for">For 1 person</div><div class="combo-item-name">1 Personal Pizza + 1 Pasta + 250ml Soft Drink</div><div class="combo-price">₹229</div></div>
-      <div class="combo-card"><div class="combo-for">For 2 people</div><div class="combo-item-name">2 Regular Pizza + 1 Pasta + 500ml Soft Drink</div><div class="combo-price">₹469</div></div>
+      <div class="combo-card"><div class="combo-for">For 1 person</div><div class="combo-item-name">1 Personal Veg Pizza (6') + 1 Veg Pasta + 250ml Soft Drink / Juice</div><div class="combo-price">₹199</div></div>
+      <div class="combo-card"><div class="combo-for">For 1 person</div><div class="combo-item-name">1 Personal Chicken Pizza (6') + 1 Chicken Pasta + 250ml Soft Drink</div><div class="combo-price">₹229</div></div>
+
+      <div class="sub-cat">Meal for 2</div>
+      <div class="combo-card"><div class="combo-for">For 2 people</div><div class="combo-item-name">2 Veg Cheese Burger + 1 Pasta + 500ml Soft Drink</div><div class="combo-price">₹269</div></div>
       <div class="combo-card"><div class="combo-for">For 2 people</div><div class="combo-item-name">2 Chicken Cheese Burger + 1 Pasta + 500ml Soft Drink</div><div class="combo-price">₹329</div></div>
-      <div class="combo-card"><div class="combo-for">For 3 people</div><div class="combo-item-name">1 Chicken Medium Pizza + 2 Garlic Bread/Fries + 750ml Soft Drink</div><div class="combo-price">₹379</div></div>
-      <div class="combo-card"><div class="combo-for">For 3 people</div><div class="combo-item-name">1 Chicken Medium + 1 Chicken Cheese Medium Pizza + 750ml Soft Drink</div><div class="combo-price">₹599</div></div>
-      <div class="combo-card"><div class="combo-for">For 3 people</div><div class="combo-item-name">1 Chicken Large + 2 Garlic Bread/Fries + 750ml Soft Drink</div><div class="combo-price">₹549</div></div>
+      <div class="combo-card"><div class="combo-for">For 2 people</div><div class="combo-item-name">2 Regular Veg Pizza (8') + 1 Veg Pasta + 500ml Soft Drink</div><div class="combo-price">₹460</div></div>
+      <div class="combo-card"><div class="combo-for">For 2 people</div><div class="combo-item-name">2 Regular Chicken Pizza (8') + 1 Chicken Pasta + 500ml Soft Drink</div><div class="combo-price">₹469</div></div>
 
-      <div class="sub-cat" style="margin-top:24px">Spicy Veg Pizza Combos</div>
-      <div class="combo-card"><div class="combo-for">Ultimate Veg</div><div class="combo-item-name">1 Large + 1 Medium + 1 Garlic Bread + 750ml Soft Drink</div><div class="combo-price">Ask us</div></div>
-      <div class="combo-card"><div class="combo-for">Veg Feast</div><div class="combo-item-name">2 Medium + 1 Garlic Bread + 750ml Drink + 1 Choco Lava</div><div class="combo-price">Ask us</div></div>
-      <div class="combo-card"><div class="combo-for">Veg Mega</div><div class="combo-item-name">2 Large + 1 Garlic Bread + 750ml + 1 Choco Lava</div><div class="combo-price">Ask us</div></div>
+      <div class="sub-cat">Meal for 3</div>
+      <div class="combo-card"><div class="combo-for">For 3 people</div><div class="combo-item-name">1 Hot Chilli Paneer Medium Veg Pizza (10') + 1 Garlic Bread + 750ml Soft Drink</div><div class="combo-price">₹349</div></div>
+      <div class="combo-card"><div class="combo-for">For 3 people</div><div class="combo-item-name">1 Chicken Medium Pizza (10') + 2 Garlic Bread/Fries + 750ml Soft Drink</div><div class="combo-price">₹379</div></div>
+      <div class="combo-card"><div class="combo-for">For 3 people</div><div class="combo-item-name">1 Peppy Paneer Large Veg Pizza (12') + 1 Garlic Bread + 750ml Soft Drink</div><div class="combo-price">₹529</div></div>
+      <div class="combo-card"><div class="combo-for">For 3 people</div><div class="combo-item-name">1 Chicken Large Pizza (12') + 2 Garlic Bread/Fries + 750ml Soft Drink</div><div class="combo-price">₹549</div></div>
+      <div class="combo-card"><div class="combo-for">For 3 people</div><div class="combo-item-name">1 Hot Chilli Paneer Medium Veg Pizza (10') + 1 Farm House Veg Pizza + 750ml Soft Drink</div><div class="combo-price">₹569</div></div>
+      <div class="combo-card"><div class="combo-for">For 3 people</div><div class="combo-item-name">1 Chicken Medium Pizza (10') + 1 Chicken Cheese Medium Pizza (10') + 750ml Soft Drink</div><div class="combo-price">₹599</div></div>
 
-      <div class="sub-cat" style="margin-top:24px">Spicy Non-Veg Pizza Combos</div>
-      <div class="combo-card"><div class="combo-for">Non-Veg Ultimate</div><div class="combo-item-name">1 Large + 1 Medium + 2 Garlic Bread/Fries + 750ml Soft Drink</div><div class="combo-price">₹799</div></div>
-      <div class="combo-card"><div class="combo-for">Non-Veg Feast</div><div class="combo-item-name">2 Medium + 2 Garlic Bread/Fries + 750ml Drink + 1 Choco Lava</div><div class="combo-price">₹699</div></div>
-      <div class="combo-card"><div class="combo-for">Non-Veg Mega</div><div class="combo-item-name">2 Large + 2 Garlic Bread/Fries + 750ml + 1 Choco Lava</div><div class="combo-price">₹949</div></div>
+      <div class="sub-cat" style="margin-top:24px">Special Pizza Combos</div>
+      <div class="combo-card"><div class="combo-for">Ultimate Veg</div><div class="combo-item-name">1 Large Veg Pizza (12') + 1 Medium Veg Pizza (10') + 1 Garlic Bread + 750ml Soft Drink</div><div class="combo-price">Ask us</div></div>
+      <div class="combo-card"><div class="combo-for">Veg Feast</div><div class="combo-item-name">2 Medium Veg Pizza (10') + 1 Garlic Bread + 750ml Drink + 1 Choco Lava</div><div class="combo-price">Ask us</div></div>
+      <div class="combo-card"><div class="combo-for">Veg Mega</div><div class="combo-item-name">2 Large Veg Pizza (12') + 1 Garlic Bread + 750ml + 1 Choco Lava</div><div class="combo-price">Ask us</div></div>
+      <div class="combo-card"><div class="combo-for">Non-Veg Ultimate</div><div class="combo-item-name">1 Large Chicken Pizza (12') + 1 Medium Chicken Pizza (10') + 2 Garlic Bread/Fries + 750ml Soft Drink</div><div class="combo-price">₹799</div></div>
+      <div class="combo-card"><div class="combo-for">Non-Veg Feast</div><div class="combo-item-name">2 Medium Chicken Pizza (10') + 2 Garlic Bread/Fries + 750ml Drink + 1 Choco Lava</div><div class="combo-price">₹699</div></div>
+      <div class="combo-card"><div class="combo-for">Non-Veg Mega</div><div class="combo-item-name">2 Large Chicken Pizza (12') + 2 Garlic Bread/Fries + 750ml + 1 Choco Lava</div><div class="combo-price">₹949</div></div>
     </div>
 
     <!-- BURGERS -->
@@ -377,10 +403,10 @@
         <div class="item-row"><div class="item-left"><div class="item-name">Chicken Mania</div></div><div class="item-right"><span class="item-price">₹99</span><span class="item-badge badge-nonveg">● NON VEG</span></div></div>
       </div>
 
-      <div class="sub-cat" style="margin-top:20px">Veg Pizzas <span style="font-size:9px;color:#6a5e48;letter-spacing:1px"> · S · R · M · L</span></div>
+      <div class="sub-cat" style="margin-top:20px">Veg Pizzas <span style="font-size:9px;color:#6a5e48;letter-spacing:1px"> · S(6') · R(8') · M(10') · L(12')</span></div>
       <div class="pizza-block"><div class="pizza-wrap">
         <table class="pizza-table">
-          <thead><tr><th>Name</th><th style="text-align:right">S</th><th style="text-align:right">R</th><th style="text-align:right">M</th><th style="text-align:right">L</th></tr></thead>
+          <thead><tr><th>Name</th><th style="text-align:right">S(6')</th><th style="text-align:right">R(8')</th><th style="text-align:right">M(10')</th><th style="text-align:right">L(12')</th></tr></thead>
           <tbody>
             <tr><td class="name-col">Margherita</td><td class="price-col">79</td><td class="price-col">129</td><td class="price-col">189</td><td class="price-col">299</td></tr>
             <tr><td class="name-col">Corn Riot</td><td class="price-col">99</td><td class="price-col">159</td><td class="price-col">239</td><td class="price-col">379</td></tr>
@@ -397,10 +423,10 @@
         </table>
       </div></div>
 
-      <div class="sub-cat" style="margin-top:20px">Non-Veg Pizzas <span style="font-size:9px;color:#6a5e48;letter-spacing:1px"> · S · R · M · L</span></div>
+      <div class="sub-cat" style="margin-top:20px">Non-Veg Pizzas <span style="font-size:9px;color:#6a5e48;letter-spacing:1px"> · S(6') · R(8') · M(10') · L(12')</span></div>
       <div class="pizza-block"><div class="pizza-wrap">
         <table class="pizza-table">
-          <thead><tr><th>Name</th><th style="text-align:right">S</th><th style="text-align:right">R</th><th style="text-align:right">M</th><th style="text-align:right">L</th></tr></thead>
+          <thead><tr><th>Name</th><th style="text-align:right">S(6')</th><th style="text-align:right">R(8')</th><th style="text-align:right">M(10')</th><th style="text-align:right">L(12')</th></tr></thead>
           <tbody>
             <tr><td class="name-col">Chicken Tandoori / BBQ</td><td class="price-col">109</td><td class="price-col">169</td><td class="price-col">249</td><td class="price-col">399</td></tr>
             <tr><td class="name-col">Chicken Tikka</td><td class="price-col">119</td><td class="price-col">189</td><td class="price-col">279</td><td class="price-col">449</td></tr>
@@ -573,20 +599,9 @@
 function show(id, btn) {
   document.querySelectorAll('.menu-section').forEach(s => s.classList.remove('visible'));
   document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
-  const section = document.getElementById('sec-' + id);
-  if (!section) return;
-  section.classList.add('visible');
+  document.getElementById('sec-' + id).classList.add('visible');
   if (btn) btn.classList.add('active');
   window.scrollTo({ top: 80, behavior: 'smooth' });
 }
-
-function initSection() {
-  const params = new URLSearchParams(window.location.search);
-  const target = params.get('s') || window.location.hash.replace(/^#/, '');
-  if (!target) return;
-  const btn = document.querySelector(`.cat-btn[onclick="show('${target}',this)"]`);
-  show(target, btn);
-}
-
-document.addEventListener('DOMContentLoaded', initSection);
-</script>
+</script></body>
+</html>
