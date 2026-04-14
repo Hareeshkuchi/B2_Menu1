@@ -573,8 +573,20 @@
 function show(id, btn) {
   document.querySelectorAll('.menu-section').forEach(s => s.classList.remove('visible'));
   document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('sec-' + id).classList.add('visible');
+  const section = document.getElementById('sec-' + id);
+  if (!section) return;
+  section.classList.add('visible');
   if (btn) btn.classList.add('active');
   window.scrollTo({ top: 80, behavior: 'smooth' });
 }
+
+function initSection() {
+  const params = new URLSearchParams(window.location.search);
+  const target = params.get('s') || window.location.hash.replace(/^#/, '');
+  if (!target) return;
+  const btn = document.querySelector(`.cat-btn[onclick="show('${target}',this)"]`);
+  show(target, btn);
+}
+
+document.addEventListener('DOMContentLoaded', initSection);
 </script>
